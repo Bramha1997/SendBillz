@@ -1,2 +1,2 @@
-# sendbillz
-This is an standalone application to generate invoices.
+# SendBillz
+This is a standalone application to generate invoices.
