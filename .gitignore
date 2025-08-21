@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SendBillz/obj
+/SendBillz/bin
+/SendBillz/.vs
