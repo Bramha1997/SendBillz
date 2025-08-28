@@ -17,14 +17,34 @@
                            BorderColor="LightGray"
                            CornerRadius="8">
                         <VerticalStackLayout Spacing="10">
+                            
                             <Label Text="Store / Company Details"
                                    FontSize="20"
                                    FontAttributes="Bold" />
-
-                            <!--  Store/Company Name Input  -->
                             <Entry x:Name="StoreNameEntry"
                                    Placeholder="Store / Company Name"
                                    Text="{Binding StoreName, Mode=TwoWay}" />
+
+                            <Label Text="Store Street Address"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="StoreAddressEntry"
+                                   Placeholder="Store Street Address"
+                                   Text="{Binding StoreStreetAddress, Mode=TwoWay}" />
+
+                            <Label Text="Store Land Mark (Optional)"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="StoreLandMarkEntry"
+                                   Placeholder="Store Land Mark"
+                                   Text="{Binding StoreLandmark, Mode=TwoWay}" />
+
+                            <Label Text="Store Pin Code"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="StorePinCodeEntry"
+                                   Placeholder="Store Pin Code"
+                                   Text="{Binding StorePinCode, Mode=TwoWay}" />
 
                             <!--  Logo Upload  -->
                             <VerticalStackLayout>

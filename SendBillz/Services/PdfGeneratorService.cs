@@ -18,6 +18,7 @@ namespace SendBillz.Services
         /// <param name="items">Invoice items</param>
         /// <param name="totalAmount">Grand total</param>
         /// <param name="storeName">Store/Company name (optional)</param>
+        /// <param name="storeAddress">Store/Company address</param>
         /// <param name="logoBytes">Logo image bytes (optional)</param>
         /// <param name="signImageBytes">Signature/hologram image bytes (optional)</param>
         /// <returns>True if PDF generated successfully; false otherwise</returns>
@@ -29,6 +30,7 @@ namespace SendBillz.Services
                                                                      ObservableCollection<InvoiceItem> items,
                                                                      double totalAmount,
                                                                      string? storeName = null,
+                                                                     string? storeAddress = null,
                                                                      byte[]? logoBytes = null,
                                                                      byte[]? signImageBytes = null)
         {
@@ -52,7 +54,7 @@ namespace SendBillz.Services
 
                     void DrawSignOrHologram()
                     {
-                        if (signImageBytes != null)
+                        if (signImageBytes != null && signImageBytes.Length > 0)
                         {
                             using var ms = new MemoryStream(signImageBytes);
                             var signImage = XImage.FromStream(() => ms);
@@ -70,26 +72,37 @@ namespace SendBillz.Services
                     {
                         page = document.AddPage();
                         gfx = XGraphics.FromPdfPage(page);
-                        yPos = margin;
+
+                        yPos = margin + 25; // Add 15 units of extra space above store name
 
                         if (!string.IsNullOrEmpty(storeName))
                         {
-                            var storeNameSize = gfx.MeasureString(storeName, fontHeader);
-                            gfx.DrawString(storeName, fontHeader, XBrushes.Black,
-                                new XRect(0, yPos, page.Width, storeNameSize.Height),
-                                XStringFormats.TopCenter);
+                            gfx.DrawString(storeName, fontHeader, XBrushes.Black, margin, yPos);
+                            yPos += 25;
+
+                            if (!string.IsNullOrEmpty(storeAddress))
+                            {
+                                var addressLines = storeAddress.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                                foreach (var line in addressLines)
+                                {
+                                    gfx.DrawString(line, fontRegular, XBrushes.Black, margin, yPos);
+                                    yPos += 15;
+                                }
+                            }
+
+                            yPos += 10; // Extra spacing after address
                         }
 
-                        if (logoBytes != null)
+                        if (logoBytes != null && logoBytes.Length > 0)
                         {
                             using var ms = new MemoryStream(logoBytes);
                             var logoImage = XImage.FromStream(() => ms);
                             double logoWidth = 60;
                             double logoHeight = (logoImage.PixelHeight * logoWidth) / logoImage.PixelWidth;
-                            gfx.DrawImage(logoImage, page.Width - margin - logoWidth, yPos, logoWidth, logoHeight);
+                            gfx.DrawImage(logoImage, page.Width - margin - logoWidth, margin, logoWidth, logoHeight);
                         }
 
-                        yPos += 50;
+                        yPos += 20;
                     }
 
                     void DrawTableHeader()
@@ -163,6 +176,5 @@ namespace SendBillz.Services
                 return false;
             }
         }
-
     }
 }

@@ -17,6 +17,9 @@ namespace SendBillz.ViewModel
         private bool _contentVisibility;
         private bool _pdfGeneratorLoaderVisibility;
         private string _storeName = string.Empty;
+        private string _storeStreetAddress = string.Empty;
+        private string _storeLandmark = string.Empty;
+        private string _storePinCode = string.Empty;
         private string _sellerName = string.Empty;
         private string _sellerGstin = string.Empty;
         private string _buyerName = string.Empty;
@@ -72,6 +75,36 @@ namespace SendBillz.ViewModel
             {
                 _storeName = value;
                 OnPropertyChanged(nameof(StoreName));
+            }
+        }
+        
+        public required string StoreStreetAddress
+        {
+            get { return _storeStreetAddress; }
+            set
+            {
+                _storeStreetAddress = value;
+                OnPropertyChanged(nameof(StoreStreetAddress));
+            }
+        }
+        
+        public required string StoreLandmark
+        {
+            get { return _storeLandmark; }
+            set
+            {
+                _storeLandmark = value;
+                OnPropertyChanged(nameof(StoreLandmark));
+            }
+        }
+        
+        public required string StorePinCode
+        {
+            get { return _storePinCode; }
+            set
+            {
+                _storePinCode = value;
+                OnPropertyChanged(nameof(StorePinCode));
             }
         }
 
@@ -192,6 +225,8 @@ namespace SendBillz.ViewModel
 
         #endregion
 
+        #region Constructors
+
         public MainPageViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
@@ -213,7 +248,14 @@ namespace SendBillz.ViewModel
             Items.Add(CreateItem());
         }
 
+        #endregion
 
+        #region Private methods
+
+        /// <summary>
+        /// Method to create items.
+        /// </summary>
+        /// <returns>Returns invoice item.</returns>
         private InvoiceItem CreateItem()
         {
             var item = new InvoiceItem();
@@ -226,6 +268,9 @@ namespace SendBillz.ViewModel
             return item;
         }
 
+        /// <summary>
+        /// Method to update total amount.
+        /// </summary>
         private void UpdateTotal()
         {
             double total = 0;
@@ -243,7 +288,14 @@ namespace SendBillz.ViewModel
             TotalAmount = $"Total: ₹{total:F2}";
         }
 
+        #endregion
 
+        #region Command event methods
+
+        /// <summary>
+        /// Event method to execute GeneratePdfCommand. 
+        /// </summary>
+        /// <returns></returns>
         private async Task ExecuteGeneratePdfCommandAsync()
         {
             // validation
@@ -279,6 +331,9 @@ namespace SendBillz.ViewModel
             }
 
             string? storeName = StoreName ?? null;
+            string? storeAddress = string.IsNullOrWhiteSpace(StoreLandmark) ? 
+                                    $"{StoreStreetAddress}\n{StorePinCode}" : 
+                                    $"{StoreStreetAddress}\n{StoreLandmark}\n{StorePinCode}";
 
             string filePath = Path.Combine(FileSystem.AppDataDirectory, $"invoice_{DateTime.Now.Ticks}.pdf");
 
@@ -286,7 +341,7 @@ namespace SendBillz.ViewModel
             PdfGeneratorLoaderVisibility = true;
 
             bool isPdfGenerated = await PdfGeneratorService.GenerateIndianInvoicePdfAsync(
-                filePath, seller, buyer, invNum, invDate, Items, total, storeName, _logoBytes, _signBytes);
+                filePath, seller, buyer, invNum, invDate, Items, total, storeName, storeAddress, _logoBytes, _signBytes);
 
             ContentVisibility = true;
             PdfGeneratorLoaderVisibility = false;
@@ -305,7 +360,10 @@ namespace SendBillz.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Event method to execute UploadLogoCommand.
+        /// </summary>
+        /// <returns></returns>
         private async Task ExecuteUploadLogoCommandAsync()
         {
             try
@@ -357,6 +415,10 @@ namespace SendBillz.ViewModel
             }
         }
 
+        /// <summary>
+        /// Event method to execute UploadSignCommand.
+        /// </summary>
+        /// <returns></returns>
         private async Task ExecuteUploadSignCommandAsync()
         {
             try
@@ -407,11 +469,16 @@ namespace SendBillz.ViewModel
             }
         }
 
+        /// <summary>
+        /// Event method to execute AddItemCommand.
+        /// </summary>
         private void ExecuteAddItemCommand()
         {
             InvoiceItem newItem = CreateItem();
             Items.Add(newItem);
             UpdateTotal();
         }
+
+        #endregion
     }
 }
