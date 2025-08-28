@@ -5,12 +5,12 @@ namespace SendBillz
 {
     public partial class App : Application
     {
-        public App()
+        public App(MainPage mainPage)
         {
             InitializeComponent();
 
             GlobalFontSettings.FontResolver = new CustomFontResolver();
-            MainPage = new MainPage(); 
+            MainPage = new NavigationPage(mainPage);
         }
     }
 }

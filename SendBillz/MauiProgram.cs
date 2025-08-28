@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using SendBillz.Interfaces;
+using SendBillz.Services;
+using SendBillz.ViewModel;
 
 namespace SendBillz
 {
@@ -25,6 +28,10 @@ namespace SendBillz
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IDialogService, DialogService>();
+            builder.Services.AddTransient<MainPageViewModel>();
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddSingleton<App>();
 
             return builder.Build();
         }

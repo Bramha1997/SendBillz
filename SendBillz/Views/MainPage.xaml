@@ -4,226 +4,224 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Invoice Generator">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="20">
+    <Grid>
+        <!--  Main content Grid  -->
+        <Grid>
+            <ScrollView Grid.Row="0"
+                        IsVisible="{Binding ContentVisibility, Mode=TwoWay}">
+                <VerticalStackLayout Padding="20"
+                                     Spacing="20">
 
-            <!--  Store/Company Details Section  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Store / Company Details"
-                           FontSize="20"
-                           FontAttributes="Bold" />
-
-                    <!--  Store/Company Name Input  -->
-                    <Entry x:Name="StoreNameEntry"
-                           Placeholder="Store / Company Name" />
-
-                    <!--  Logo Upload  -->
-                    <VerticalStackLayout>
-                        <Label Text="Store Logo"
-                               FontSize="16" />
-                        <Image x:Name="LogoImage"
-                               HeightRequest="80"
-                               WidthRequest="80"
-                               Aspect="AspectFit"
-                               Margin="10"
-                               BackgroundColor="LightGray" />
-                        <Button Text="Upload Logo"
-                                Clicked="OnUploadLogoClicked" />
-                    </VerticalStackLayout>
-                    
-                    <!--  Sign Upload  -->
-                    <VerticalStackLayout>
-                        <Label Text="Store Sign"
-                               FontSize="16" />
-                        <Image x:Name="SignImage"
-                               HeightRequest="80"
-                               WidthRequest="80"
-                               Aspect="AspectFit"
-                               Margin="10"
-                               BackgroundColor="LightGray" />
-                        <Button Text="Upload Sign"
-                                Clicked="OnUploadSignClicked" />
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!--  Seller Section  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Seller Details"
-                           FontSize="20"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="SellerNameEntry"
-                           Placeholder="Seller Name" />
-                    <Entry x:Name="SellerGstinEntry"
-                           Placeholder="Seller GSTIN" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!--  Buyer Section  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Buyer Details"
-                           FontSize="20"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="BuyerNameEntry"
-                           Placeholder="Buyer Name" />
-                    <Entry x:Name="BuyerGstinEntry"
-                           Placeholder="Buyer GSTIN" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!--  Invoice Metadata  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Invoice Details"
-                           FontSize="20"
-                           FontAttributes="Bold" />
-                    <HorizontalStackLayout Spacing="10">
-                        <Entry x:Name="InvoiceNumberEntry"
-                               Placeholder="Invoice Number"
-                               WidthRequest="180" />
-                        <DatePicker x:Name="InvoiceDatePicker" />
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!--  Invoice Items Section  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8"
-                   MinimumHeightRequest="300">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Invoice Items"
-                           FontSize="20"
-                           FontAttributes="Bold" />
-
-                    <!--  STATIC HEADER inside HorizontalScrollView  -->
-                    <!--<ScrollView Orientation="Horizontal"
-                                HeightRequest="40">
-                        <Grid Padding="5"
-                              ColumnSpacing="10"
-                              WidthRequest="600">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="230" />        
-                                --><!--  Description  --><!--
-                                <ColumnDefinition Width="60" />      
-                                --><!--  Quantity  --><!--
-                                <ColumnDefinition Width="80" />      
-                                --><!--  Unit Price  --><!--
-                                <ColumnDefinition Width="80" />      
-                                --><!--  Discount  --><!--
-                                <ColumnDefinition Width="Auto" />    
-                                --><!--  Actions  --><!--
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   Text="Description"
+                    <!--  Store/Company Details Section  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Store / Company Details"
+                                   FontSize="20"
                                    FontAttributes="Bold" />
-                            <Label Grid.Column="1"
-                                   Text="Qty"
-                                   FontAttributes="Bold"
-                                   HorizontalTextAlignment="Center" />
-                            <Label Grid.Column="2"
-                                   Text="Unit Price"
-                                   FontAttributes="Bold"
-                                   HorizontalTextAlignment="Center" />
-                            <Label Grid.Column="3"
-                                   Text="Discount"
-                                   FontAttributes="Bold"
-                                   HorizontalTextAlignment="Center" />
-                            <Label Grid.Column="4"
-                                   Text="Action"
-                                   FontAttributes="Bold"
-                                   HorizontalTextAlignment="Center" />
-                        </Grid>
-                    </ScrollView>-->
 
-                    <!--  ITEMS LIST inside HorizontalScrollView (same width as header)  -->
-                    <ScrollView Orientation="Horizontal"
-                                HeightRequest="180">
-                        <CollectionView x:Name="ItemsCollection"
-                                        ItemsSource="{Binding Items}"
+                            <!--  Store/Company Name Input  -->
+                            <Entry x:Name="StoreNameEntry"
+                                   Placeholder="Store / Company Name"
+                                   Text="{Binding StoreName, Mode=TwoWay}" />
+
+                            <!--  Logo Upload  -->
+                            <VerticalStackLayout>
+                                <Label Text="Store Logo"
+                                       FontSize="16" />
+                                <Image x:Name="LogoImage"
+                                       Margin="10"
+                                       Source="{Binding LogoImageSource}"
+                                       HeightRequest="80"
+                                       WidthRequest="80"
+                                       Aspect="AspectFit"
+                                       BackgroundColor="LightGray" />
+                                <Button Text="Upload Logo"
+                                        BackgroundColor="#0078D7"
+                                        Command="{Binding UploadLogoCommand}" />
+                            </VerticalStackLayout>
+
+                            <!--  Sign Upload  -->
+                            <VerticalStackLayout>
+                                <Label Text="Store Sign"
+                                       FontSize="16" />
+                                <Image x:Name="SignImage"
+                                       Margin="10"
+                                       HeightRequest="80"
+                                       Source="{Binding SignImageSource}"
+                                       WidthRequest="80"
+                                       Aspect="AspectFit"
+                                       BackgroundColor="LightGray" />
+                                <Button Text="Upload Sign"
+                                        BackgroundColor="#0078D7"
+                                        Command="{Binding UploadSignCommand}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!--  Seller Section  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Seller Details"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="SellerNameEntry"
+                                   Placeholder="Seller Name"
+                                   Text="{Binding SellerName, Mode=TwoWay}" />
+                            <Entry x:Name="SellerGstinEntry"
+                                   Placeholder="Seller GSTIN"
+                                   Text="{Binding SellerGstin, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!--  Buyer Section  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Buyer Details"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="BuyerNameEntry"
+                                   Placeholder="Buyer Name"
+                                   Text="{Binding BuyerName, Mode=TwoWay}" />
+                            <Entry x:Name="BuyerGstinEntry"
+                                   Placeholder="Buyer GSTIN"
+                                   Text="{Binding BuyerGstin, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!--  Invoice Metadata  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Invoice Details"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <HorizontalStackLayout Spacing="10">
+                                <Entry x:Name="InvoiceNumberEntry"
+                                       Placeholder="Invoice Number"
+                                       Text="{Binding InvoiceNumber, Mode=TwoWay}"
+                                       WidthRequest="180" />
+                                <DatePicker x:Name="InvoiceDatePicker"
+                                            Date="{Binding InvoiceDate, Mode=TwoWay}" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!--  Invoice Items Section  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8"
+                           MinimumHeightRequest="300">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Invoice Items"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+
+                            <ScrollView Orientation="Horizontal"
                                         HeightRequest="180">
-                            <CollectionView.ItemsLayout>
-                                <!--  Vertical list, but scroll horizontally for columns  -->
-                                <LinearItemsLayout Orientation="Vertical" />
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="5"
-                                          ColumnSpacing="10"
-                                          WidthRequest="600">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="60" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Entry Grid.Column="0"
-                                               Text="{Binding Description}"
-                                               Placeholder="Description" />
-                                        <Entry Grid.Column="1"
-                                               Text="{Binding Quantity}"
-                                               Placeholder="Qty"
-                                               Keyboard="Numeric" />
-                                        <Entry Grid.Column="2"
-                                               Text="{Binding UnitPrice}"
-                                               Placeholder="Unit Price"
-                                               Keyboard="Numeric" />
-                                        <Entry Grid.Column="3"
-                                               Text="{Binding Discount}"
-                                               Placeholder="Discount"
-                                               Keyboard="Numeric" />
-                                        <Entry Grid.Column="4"
-                                               Text="{Binding GstRate}"
-                                               Placeholder="Gst Rate"
-                                               Keyboard="Numeric" />
-                                        <Button Grid.Column="5"
-                                                Text="Remove"
-                                                Command="{Binding RemoveCommand}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ScrollView>
+                                <CollectionView x:Name="ItemsCollection"
+                                                ItemsSource="{Binding Items}"
+                                                HeightRequest="180">
+                                    <CollectionView.ItemsLayout>
+                                        <!--  Vertical list, but scroll horizontally for columns  -->
+                                        <LinearItemsLayout Orientation="Vertical" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Padding="5"
+                                                  ColumnSpacing="10"
+                                                  WidthRequest="600">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="60" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Entry Grid.Column="0"
+                                                       Text="{Binding Description}"
+                                                       Placeholder="Description" />
+                                                <Entry Grid.Column="1"
+                                                       Text="{Binding Quantity}"
+                                                       Placeholder="Qty"
+                                                       Keyboard="Numeric" />
+                                                <Entry Grid.Column="2"
+                                                       Text="{Binding UnitPrice}"
+                                                       Placeholder="Unit Price"
+                                                       Keyboard="Numeric" />
+                                                <Entry Grid.Column="3"
+                                                       Text="{Binding Discount}"
+                                                       Placeholder="Discount"
+                                                       Keyboard="Numeric" />
+                                                <Entry Grid.Column="4"
+                                                       Text="{Binding GstRate}"
+                                                       Placeholder="Gst Rate"
+                                                       Keyboard="Numeric" />
+                                                <Button Grid.Column="5"
+                                                        Text="Remove"
+                                                        BackgroundColor="#0078D7"
+                                                        Command="{Binding RemoveCommand}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </ScrollView>
 
-                    <Button Text="Add Item"
-                            HorizontalOptions="Start"
-                            Clicked="Add_Item_Button_Clicked" />
+                            <Button Text="Add Item"
+                                    HorizontalOptions="Start"
+                                    BackgroundColor="#0078D7"
+                                    Command="{Binding AddItemCommand}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!--  Totals & Actions  -->
+                    <Frame Padding="10"
+                           BorderColor="LightGray"
+                           CornerRadius="8">
+                        <VerticalStackLayout Spacing="15">
+                            <Label x:Name="TotalLabel"
+                                   Text="{Binding TotalAmount, Mode=TwoWay}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center" />
+
+                            <Button Text="Generate and Share PDF"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="#0078D7"
+                                    TextColor="White"
+                                    Command="{Binding GeneratePdfCommand}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
                 </VerticalStackLayout>
-            </Frame>
+            </ScrollView>
+        </Grid>
 
-            <!--  Totals & Actions  -->
-            <Frame Padding="10"
-                   BorderColor="LightGray"
-                   CornerRadius="8">
-                <VerticalStackLayout Spacing="15">
-                    <Label x:Name="TotalLabel"
-                           Text="Total: ₹0.00"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center" />
-
-                    <Button Text="Generate and Share PDF"
-                            FontAttributes="Bold"
-                            BackgroundColor="#0078D7"
-                            TextColor="White"
-                            Clicked="GenerateAndSharePdfAsync_Clicked" />
-                </VerticalStackLayout>
-            </Frame>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <!--  Loader Grid  -->
+        <Grid BackgroundColor="#80000000"
+              IsVisible="{Binding PdfGeneratorLoaderVisibility, Mode=TwoWay}"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+            <VerticalStackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="15">
+                <ActivityIndicator IsRunning="True"
+                                   WidthRequest="50"
+                                   HeightRequest="50"
+                                   Color="#0078D7" />
+                <Label Text="Generating PDF"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>
